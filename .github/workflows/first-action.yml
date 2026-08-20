@@ -1,5 +1,11 @@
 name: first workflow #name of the workflow
-on: workflow_dispatch #trigger the workflow manually, use [push] for automatic trigger
+on: #trigger the workflow manually, use [push] for automatic trigger
+  workflow_dispatch:
+    inputs:
+      name: #name of the input
+        description: 'Name to greet' #description of the input
+        required: true #specifies that the input is required
+        default: 'World' #default value of the input
 jobs:
   first-job: #name of the job
     runs-on: ubuntu-latest #specifies the type of machine to run the job on
