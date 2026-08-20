@@ -1,0 +1,38 @@
+name: second workflow #name of the workflow
+on: push #trigger the workflow automatically on push events
+jobs:
+  test: #name of the job
+    runs-on: ubuntu-latest #specifies the type of machine to run the job on
+    steps:
+      - name: Get code #name of the step
+        uses: actions/checkout@v3 #uses the checkout action to get the code from the repository
+        with:
+          repository: ${{ github.repository }} #specifies the repository to checkout
+      - name: install nodejs
+        uses: actions/setup-node@v3 #uses the setup-node action to install Node.js
+        with:
+          node-version: "18" #specifies the version of Node.js to install
+      - name: install dependencies
+        run: npm ci #installs the dependencies specified in package-lock.json
+      - name: run tests
+        run: npm test #runs the tests specified in package.json
+  deploy:
+    needs: test #specifies that the deploy job depends on the test job
+    runs-on: ubuntu-latest #specifies the type of machine to run the job on
+    steps:
+      - name: Get code #name of the step
+        uses: actions/checkout@v3 #uses the checkout action to get the code from the repository
+        with:
+          repository: ${{ github.repository }} #specifies the repository to checkout
+      - name: install nodejs
+        uses: actions/setup-node@v3 #uses the setup-node action to install Node.js
+        with:
+          node-version: "18" #specifies the version of Node.js to install
+      - name: install dependencies
+        run: npm ci #installs the dependencies specified in package-lock.json
+      - name: run tests
+        run: npm test #runs the tests specified in package.json
+      - name: build
+        run: npm run build #runs the build script specified in package.json
+      - name: deploy
+        run: npm run deploy #runs the deploy script specified in package.json
